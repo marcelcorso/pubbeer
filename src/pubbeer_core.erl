@@ -1,4 +1,4 @@
--module(pubbeer).
+-module(pubbeer_core).
 
 -behaviour(gen_server).
 
