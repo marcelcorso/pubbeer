@@ -3,7 +3,7 @@
 
 %% @doc TEMPLATE.
 
--module(../../pubbeer/pubbeer).
+-module(pubbeer).
 -author('author <author@example.com>').
 -export([start/0, stop/0]).
 
@@ -16,15 +16,15 @@ ensure_started(App) ->
     end.
 
 %% @spec start() -> ok
-%% @doc Start the ../../pubbeer/pubbeer server.
+%% @doc Start the pubbeer server.
 start() ->
-    ../../pubbeer/pubbeer_deps:ensure(),
+    pubbeer_deps:ensure(),
     ensure_started(crypto),
-    application:start(../../pubbeer/pubbeer).
+    application:start(pubbeer).
 
 %% @spec stop() -> ok
-%% @doc Stop the ../../pubbeer/pubbeer server.
+%% @doc Stop the pubbeer server.
 stop() ->
-    Res = application:stop(../../pubbeer/pubbeer),
+    Res = application:stop(pubbeer),
     application:stop(crypto),
     Res.

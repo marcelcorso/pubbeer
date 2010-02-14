@@ -1,10 +1,10 @@
-%% @author author <author@example.com>
+%% @author author <marcel>
 %% @copyright YYYY author.
 
-%% @doc Web server for ../../pubbeer/pubbeer.
+%% @doc Web server for pubbeer.
 
--module(../../pubbeer/pubbeer_web).
--author('author <author@example.com>').
+-module(pubbeer_web).
+-author('marcel').
 
 -export([start/1, stop/0, loop/2]).
 

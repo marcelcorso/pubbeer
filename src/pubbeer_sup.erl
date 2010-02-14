@@ -1,9 +1,9 @@
 %% @author author <author@example.com>
 %% @copyright YYYY author.
 
-%% @doc Supervisor for the ../../pubbeer/pubbeer application.
+%% @doc Supervisor for the pubbeer application.
 
--module(../../pubbeer/pubbeer_sup).
+-module(pubbeer_sup).
 -author('author <author@example.com>').
 
 -behaviour(supervisor).
@@ -45,9 +45,9 @@ init([]) ->
     WebConfig = [
          {ip, Ip},
                  {port, 8000},
-                 {docroot, ../../pubbeer/pubbeer_deps:local_path(["priv", "www"])}],
-    Web = {../../pubbeer/pubbeer_web,
-           {../../pubbeer/pubbeer_web, start, [WebConfig]},
+                 {docroot, pubbeer_deps:local_path(["priv", "www"])}],
+    Web = {pubbeer_web,
+           {pubbeer_web, start, [WebConfig]},
            permanent, 5000, worker, dynamic},
 
     Processes = [Web],

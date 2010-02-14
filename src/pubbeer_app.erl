@@ -1,9 +1,9 @@
 %% @author author <author@example.com>
 %% @copyright YYYY author.
 
-%% @doc Callbacks for the ../../pubbeer/pubbeer application.
+%% @doc Callbacks for the pubbeer application.
 
--module(../../pubbeer/pubbeer_app).
+-module(pubbeer_app).
 -author('author <author@example.com>').
 
 -behaviour(application).
@@ -11,13 +11,13 @@
 
 
 %% @spec start(_Type, _StartArgs) -> ServerRet
-%% @doc application start callback for ../../pubbeer/pubbeer.
+%% @doc application start callback for pubbeer.
 start(_Type, _StartArgs) ->
-    ../../pubbeer/pubbeer_deps:ensure(),
-    ../../pubbeer/pubbeer_sup:start_link().
+    pubbeer_deps:ensure(),
+    pubbeer_sup:start_link().
 
 %% @spec stop(_State) -> ServerRet
-%% @doc application stop callback for ../../pubbeer/pubbeer.
+%% @doc application stop callback for pubbeer.
 stop(_State) ->
     ok.
 

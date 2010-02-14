@@ -1,6 +1,6 @@
 include ../support/include.mk
 
-APPLICATION=../../pubbeer/pubbeer
+APPLICATION=pubbeer
 DOC_OPTS={dir,\"../doc\"}
 TEST_PLT=$(TEST_DIR)/dialyzer_plt
 
