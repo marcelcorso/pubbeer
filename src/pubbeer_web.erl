@@ -20,19 +20,19 @@ start(Options) ->
 stop() ->
     mochiweb_http:stop(?MODULE).
 
-
 % GET /
-% lists nodes
 % POST /
-% create node
 % GET /node_name
-% gets activities for node_name
 % DELETE /node_name
-% destroy node_name
-% GET /node_name/subs
-% lists node_name's subscribers
-% POST /nodename/subs
-% subscribe to node_name's activities
+% GET /node_name/activities
+% POST /node_name/activities
+% GET /node_name/activities/31415
+% DELETE /node_name/activities/31415
+% GET /node_name/subscribers
+% POST /nodename/subscribers
+% GET /node_name/subscribers/31415
+% DELETE /node_name/subscribers/31415
+
 loop(Req, DocRoot) ->
     "/" ++ Path = Req:get(path),
     case Req:get(method) of
@@ -43,13 +43,33 @@ loop(Req, DocRoot) ->
                   Nodes = pubbeer_core:list_nodes(),
                   Template = lists:foldl(fun(_, Acc) -> ["~s~n"|Acc] end, [], Nodes),
                   success(Req, subst(lists:flatten(Template), Nodes));
+                Node ++ "/activities" -> 
+                  Activities = pubbeer_core:activities(Node),
+                  Template = lists:foldl(fun(_, Acc) -> ["~s~n"|Acc] end, [], Activities),
+                  success(Req, subst(lists:flatten(Template), Activities));
                 _ ->
                     Req:serve_file(Path, DocRoot)
             end;
         'POST' ->
             case Path of
-                _ ->
-                    Req:not_found()
+                "" -> 
+                 
+                  Json = proplists:get_value("json", Data),
+                  Struct = mochijson2:decode(Json),
+
+                  %%io:format("~nStruct : ~p~n", [Struct]),
+
+                  Name = struct:get_value(<<"name">>, Struct),
+
+                  Result = pubbeer_core:create(Name),
+
+                  %%io:format("~nResult : ~p~n", [Result]),
+
+                  DataOut = mochijson2:encode(Result),
+
+                  Req:ok({"application/json", [], [DataOut]});
+
+                _ -> Req:not_found()
             end;
         _ ->
             Req:respond({501, [], []})
