@@ -50,8 +50,12 @@ init([]) ->
            {pubbeer_web, start, [WebConfig]},
            permanent, 5000, worker, dynamic},
 
-    Processes = [Web],
-    {ok, {{one_for_one, 10, 10}, Processes}}.
+    Core = {pubbeer_core,
+            {pubbeer_core, start_link, []},
+            permanent, 5000, worker, [pubbeer_core]},
+
+    Processes = [Web, Core],
+    {ok, {{one_for_all, 10, 10}, Processes}}.
 
 
 %%

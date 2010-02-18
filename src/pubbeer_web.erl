@@ -37,8 +37,9 @@ loop(Req, DocRoot) ->
     "/" ++ Path = Req:get(path),
     case Req:get(method) of
         Method when Method =:= 'GET'; Method =:= 'HEAD' ->
+            erlang:display("Path: -" ++ Path ++ "-"),
             case Path of
-                'listnodes' ->
+                "" ->
                   Nodes = pubbeer_core:list_nodes(),
                   Template = lists:foldl(fun(_, Acc) -> ["~s~n"|Acc] end, [], Nodes),
                   success(Req, subst(lists:flatten(Template), Nodes));
