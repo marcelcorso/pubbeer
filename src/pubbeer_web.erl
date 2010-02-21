@@ -43,31 +43,31 @@ loop(Req, DocRoot) ->
                   Nodes = pubbeer_core:list_nodes(),
                   Template = lists:foldl(fun(_, Acc) -> ["~s~n"|Acc] end, [], Nodes),
                   success(Req, subst(lists:flatten(Template), Nodes));
-                Node ++ "/activities" -> 
-                  Activities = pubbeer_core:activities(Node),
-                  Template = lists:foldl(fun(_, Acc) -> ["~s~n"|Acc] end, [], Activities),
-                  success(Req, subst(lists:flatten(Template), Activities));
+%                Node ++ "/activities" -> 
+%                  Activities = pubbeer_core:activities(Node),
+%                  Template = lists:foldl(fun(_, Acc) -> ["~s~n"|Acc] end, [], Activities),
+%                  success(Req, subst(lists:flatten(Template), Activities));
                 _ ->
                     Req:serve_file(Path, DocRoot)
             end;
         'POST' ->
             case Path of
-                "" -> 
+                %"" -> 
                  
-                  Json = proplists:get_value("json", Data),
-                  Struct = mochijson2:decode(Json),
+                  %Json = proplists:get_value("json", Data),
+                  %Struct = mochijson2:decode(Json),
 
                   %%io:format("~nStruct : ~p~n", [Struct]),
 
-                  Name = struct:get_value(<<"name">>, Struct),
+                  %Name = struct:get_value(<<"name">>, Struct),
 
-                  Result = pubbeer_core:create(Name),
+                  %Result = pubbeer_core:create(Name),
 
                   %%io:format("~nResult : ~p~n", [Result]),
 
-                  DataOut = mochijson2:encode(Result),
+                  %DataOut = mochijson2:encode(Result),
 
-                  Req:ok({"application/json", [], [DataOut]});
+                  %Req:ok({"application/json", [], [DataOut]});
 
                 _ -> Req:not_found()
             end;

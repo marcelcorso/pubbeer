@@ -3,7 +3,7 @@
 -behaviour(gen_server).
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
--export([start_link/0, create/1, destroy/1, pub/2, sub/2, unsub/2, list_nodes/0, list_subscribers/1, shutdown/0]).
+-export([start_link/0, create/1, destroy/1, pub/2, sub/2, unsub/2, list_nodes/0, list_subscribers/1, list_activities/1, shutdown/0]).
 
 %% Client functions
 start_link() ->
@@ -17,6 +17,9 @@ destroy(NodeName) ->
 
 list_nodes() ->
   gen_server:call(?MODULE, {list_nodes}).
+
+list_activities(NodeName) ->
+  gen_server:call(?MODULE, {list_activities, NodeName}).
 
 pub(NodeName, Body) ->
   gen_server:call(?MODULE, {pub, NodeName, Body}).
@@ -59,7 +62,15 @@ handle_call({destroy, NodeName}, _From, Nodes) ->
 handle_call({list_nodes}, _From, Nodes) ->
   {reply, dict:fetch_keys(Nodes), Nodes};
 
- 
+handle_call({list_activities, NodeName}, _From, Nodes) ->
+  case dict:find(NodeName, Nodes) of
+    {ok, _} ->
+      {reply, ok, activity_store:get(NodeName)};
+    error ->
+      {reply, false, Nodes}
+  end;
+  
+
 handle_call({pub, NodeName, Body}, _From, Nodes) ->
   case dict:find(NodeName, Nodes) of
     {ok, NodeListeners} ->
